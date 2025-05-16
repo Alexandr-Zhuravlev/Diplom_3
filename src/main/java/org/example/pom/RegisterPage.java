@@ -20,7 +20,7 @@ public class RegisterPage {
     private By loginLink = By.xpath("//a[text() = 'Войти']");
     private By errorPassword = By.xpath("//p[text() = 'Некорректный пароль']");
 
-    @Step("Открытие браузера")
+    @Step("Открытие браузера на странице регистрации")
     public RegisterPage open(){
         driver.get(TestProperties.BASE_URL + TestProperties.PATH_REGISTER);
         return this;
