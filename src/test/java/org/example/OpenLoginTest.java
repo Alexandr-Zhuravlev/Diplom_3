@@ -1,30 +1,113 @@
 package org.example;
 
-import org.junit.After;
-import org.junit.Before;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import io.restassured.response.Response;
+import org.example.config.AbstractUiBaseTest;
+import org.example.generators.UserGenerator;
+import org.example.models.UserDto;
+import org.example.pom.*;
 import org.junit.Test;
-import org.openqa.selenium.WebDriver;
 
-import static org.example.driver.WebDriverCreator.createWebDriver;
+import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_OK;
 
-public class OpenLoginTest {
 
-    private static final String BASE_URL = "https://stellarburgers.nomoreparties.site/";
+public class OpenLoginTest extends AbstractUiBaseTest {
 
-    private WebDriver driver;
+    @Test
+    public void loginTheLoginToAccountButton(){
+        MainPage mainPage = new MainPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        UserDto user = UserGenerator.randomUser();
 
-    @Before
-    public void setUp() {
-        driver = createWebDriver();
+        Response response = userSteps.create(user, SC_OK);
+
+        mainPage
+                .open()
+                .maximizeWindow()
+                .loginToAccountClick();
+        loginPage
+                .emailInputSetText(user.getEmail())
+                .passwordInputSetText(user.getPassword())
+                .loginButtonClick();
+        mainPage
+                .placeAnOrderButtonVisibility();
+
+        //Удаление созданного пользователя
+        userSteps.delete(new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString(), SC_ACCEPTED);
     }
 
     @Test
-    public void test() {
-        driver.get(BASE_URL);
+    public void loginThePersonalAccountButton(){
+        HeadPage headPage = new HeadPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        MainPage mainPage = new MainPage(driver);
+        UserDto user = UserGenerator.randomUser();
+
+        Response response = userSteps.create(user, SC_OK);
+
+        mainPage
+                .open()
+                .maximizeWindow();
+        headPage
+                .personalAccountButtonClick();
+        loginPage
+                .emailInputSetText(user.getEmail())
+                .passwordInputSetText(user.getPassword())
+                .loginButtonClick();
+        mainPage
+                .placeAnOrderButtonVisibility();
+
+        //Удаление созданного пользователя
+        userSteps.delete(new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString(), SC_ACCEPTED);
     }
 
-    @After
-    public void tearDown() {
-        driver.close();
+    @Test
+    public void loginLinkInRegistrationPage(){
+        RegisterPage registerPage = new RegisterPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        MainPage mainPage = new MainPage(driver);
+        UserDto user = UserGenerator.randomUser();
+
+        Response response = userSteps.create(user, SC_OK);
+
+        registerPage
+                .open()
+                .maximizeWindow()
+                .loginLinkClick();
+        loginPage
+                .emailInputSetText(user.getEmail())
+                .passwordInputSetText(user.getPassword())
+                .loginButtonClick();
+        mainPage
+                .placeAnOrderButtonVisibility();
+
+        //Удаление созданного пользователя
+        userSteps.delete(new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString(), SC_ACCEPTED);
+    }
+
+    @Test
+    public void loginLinkInForgotPasswordPage(){
+        ForgotPasswordPage forgotPasswordPage = new ForgotPasswordPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        MainPage mainPage = new MainPage(driver);
+        UserDto user = UserGenerator.randomUser();
+
+        Response response = userSteps.create(user, SC_OK);
+
+        forgotPasswordPage
+                .open()
+                .maximizeWindow()
+                .loginLinkClick();
+        loginPage
+                .emailInputSetText(user.getEmail())
+                .passwordInputSetText(user.getPassword())
+                .loginButtonClick();
+        mainPage
+                .placeAnOrderButtonVisibility();
+
+        //Удаление созданного пользователя
+        userSteps.delete(new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString(), SC_ACCEPTED);
     }
 }

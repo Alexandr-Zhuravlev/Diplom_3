@@ -5,6 +5,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.openqa.selenium.WebDriver;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.example.driver.WebDriverCreator.createWebDriver;
 
 public abstract class AbstractUiBaseTest {
@@ -15,6 +17,7 @@ public abstract class AbstractUiBaseTest {
     @Before
     public void setUp() {
         driver = createWebDriver();
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
     }
 
     @After
