@@ -2,6 +2,7 @@ package org.example;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
@@ -20,7 +21,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class LogOutTest extends AbstractUiBaseTest {
 
     @Test
-    @Description("Проверка выхода по кнопке Выйти в личном кабинете")
+    @DisplayName("Проверка выхода по кнопке Выйти в личном кабинете")
     public void transitionInProfileAccount(){
         MainPage mainPage = new MainPage(driver);
         HeadPage headPage = new HeadPage(driver);

@@ -2,6 +2,7 @@ package org.example;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
 import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
@@ -18,7 +19,7 @@ public class RegistrationUserTest extends AbstractUiBaseTest {
 
 
     @Test
-    @Description("Проверка успешной регистрации")
+    @DisplayName("Проверка успешной регистрации")
     public void registration(){
         RegisterPage registerPage = new RegisterPage(driver);
         LoginPage loginPage = new LoginPage(driver);
@@ -42,7 +43,7 @@ public class RegistrationUserTest extends AbstractUiBaseTest {
     }
 
     @Test
-    @Description("Проверка ошибки при не корректном пароле")
+    @DisplayName("Проверка ошибки при не корректном пароле")
     public void registrationWithIncorrectPassword(){
         RegisterPage registerPage = new RegisterPage(driver);
         UserDto user = UserGenerator.randomUser().toBuilder().password("1234").build();
