@@ -13,8 +13,6 @@ public class ForgotPasswordPage {
         this.driver = driver;
     }
 
-    private By emailInput = By.xpath("//label[text() = 'Email']/..//input[@name = 'name']");
-    private By recoverButton = By.xpath("//button[text() = 'Восстановить']");
     private By loginLink = By.xpath("//a[text() = 'Войти']");
 
     @Step("Открытие браузера на странице восстановления пароля")
@@ -26,16 +24,6 @@ public class ForgotPasswordPage {
     @Step("Разворачивание окна в максимальный размер")
     public ForgotPasswordPage maximizeWindow(){
         driver.manage().window().maximize();
-        return this;
-    }
-
-    public ForgotPasswordPage emailInputSetText(String text){
-        driver.findElement(emailInput).sendKeys(text);
-        return this;
-    }
-
-    public ForgotPasswordPage recoverButtonClick(){
-        driver.findElement(recoverButton).click();
         return this;
     }
 

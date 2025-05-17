@@ -3,6 +3,7 @@ package org.example;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.restassured.response.Response;
+import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
 import org.example.generators.UserGenerator;
 import org.example.models.UserDto;
@@ -18,6 +19,7 @@ import static org.apache.http.HttpStatus.SC_OK;
 public class TransitionTest extends AbstractUiBaseTest {
 
     @Test
+    @Description("Проверка перехода по клику на Личный кабинет")
     public void transitionInProfileAccount(){
         MainPage mainPage = new MainPage(driver);
         HeadPage headPage = new HeadPage(driver);
@@ -45,6 +47,7 @@ public class TransitionTest extends AbstractUiBaseTest {
     }
 
     @Test
+    @Description("Проверка перехода по клику на логотип Stellar Burgers")
     public void transitionFromProfileAccountToMainPageByClickLogo(){
         MainPage mainPage = new MainPage(driver);
         HeadPage headPage = new HeadPage(driver);
@@ -70,6 +73,7 @@ public class TransitionTest extends AbstractUiBaseTest {
     }
 
     @Test
+    @Description("Проверка перехода по клику на Конструктор")
     public void transitionFromProfileAccountToConstructor(){
         MainPage mainPage = new MainPage(driver);
         HeadPage headPage = new HeadPage(driver);

@@ -22,6 +22,6 @@ public abstract class AbstractUiBaseTest {
 
     @After
     public void tearDown() {
-        driver.close();
+        driver.quit();
     }
 }

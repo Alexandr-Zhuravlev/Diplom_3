@@ -19,17 +19,6 @@ public class LoginPage {
     private By registerLink = By.xpath("//a[text() = 'Зарегистрироваться']");
     private By forgotPasswordLink = By.xpath("//a[text() = 'Восстановить пароль']");
 
-    @Step("Открытие браузера на странице авторизации")
-    public LoginPage open(){
-        driver.get(TestProperties.BASE_URL + TestProperties.PATH_LOGIN);
-        return this;
-    }
-
-    @Step("Разворачивание окна в максимальный размер")
-    public LoginPage maximizeWindow(){
-        driver.manage().window().maximize();
-        return this;
-    }
 
     public LoginPage emailInputSetText(String text){
         driver.findElement(emailInput).sendKeys(text);
@@ -53,6 +42,11 @@ public class LoginPage {
 
     public LoginPage forgotPasswordLinkClick(){
         driver.findElement(forgotPasswordLink).click();
+        return this;
+    }
+
+    public LoginPage loginButtonVisibility(){
+        driver.findElement(loginButton).isDisplayed();
         return this;
     }
 }

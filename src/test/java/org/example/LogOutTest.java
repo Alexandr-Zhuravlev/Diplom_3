@@ -1,4 +1,52 @@
 package org.example;
 
-public class LogOutTest {
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import io.restassured.response.Response;
+import jdk.jfr.Description;
+import org.example.config.AbstractUiBaseTest;
+import org.example.generators.UserGenerator;
+import org.example.models.UserDto;
+import org.example.pom.HeadPage;
+import org.example.pom.LoginPage;
+import org.example.pom.MainPage;
+import org.example.pom.ProfilePage;
+import org.junit.Test;
+import org.openqa.selenium.html5.WebStorage;
+
+import static org.apache.http.HttpStatus.SC_ACCEPTED;
+import static org.apache.http.HttpStatus.SC_OK;
+
+public class LogOutTest extends AbstractUiBaseTest {
+
+    @Test
+    @Description("Проверка выхода по кнопке Выйти в личном кабинете")
+    public void transitionInProfileAccount(){
+        MainPage mainPage = new MainPage(driver);
+        HeadPage headPage = new HeadPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        ProfilePage profilePage = new ProfilePage(driver);
+
+        UserDto user = UserGenerator.randomUser();
+        Response response = userSteps.create(user, SC_OK);
+        final String accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
+        final String refreshToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("refreshToken").getAsString();
+
+        mainPage
+                .open()
+                .maximizeWindow();
+
+        ((WebStorage) driver).getLocalStorage().setItem("accessToken", accessToken);
+        ((WebStorage) driver).getLocalStorage().setItem("refreshToken", refreshToken);
+
+        headPage
+                .personalAccountButtonClick();
+        profilePage
+                .logOutButtonClick();
+        loginPage
+                .loginButtonVisibility();
+
+        //Удаление созданного пользователя
+        userSteps.delete(accessToken, SC_ACCEPTED);
+    }
 }

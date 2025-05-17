@@ -14,8 +14,14 @@ public class MainPage {
     }
 
     private By loginToAccountButton = By.xpath("//button[text() = 'Войти в аккаунт']");
-    private By checkActiveTabConstructor = By.xpath("//div[contains(@class, 'tab_tab_type_current__')]/span");
+    private By activeTabBun = By.xpath("//div[contains(@class, 'tab_tab_type_current__')]/span[text() = 'Булки']");
+    private By activeTabSause = By.xpath("//div[contains(@class, 'tab_tab_type_current__')]/span[text() = 'Соусы']");
+    private By activeTabFilling = By.xpath("//div[contains(@class, 'tab_tab_type_current__')]/span[text() = 'Начинки']");
     private By placeAnOrderButton = By.xpath("//button[text() = 'Оформить заказ']");
+    private By bunTabConstructor = By.xpath("//span[text() = 'Булки']/..");
+    private By sauseTabConstructor = By.xpath("//span[text() = 'Соусы']/..");
+    private By fillingTabConstructor = By.xpath("//span[text() = 'Начинки']/..");
+
 
     @Step("Открытие браузера на главной странице")
     public MainPage open(){
@@ -35,9 +41,30 @@ public class MainPage {
         return this;
     }
 
-    @Step("Нажатие на кнопку Войти в аккаунт")
+    @Step("Кнопка Оформить заказ отображена")
     public MainPage placeAnOrderButtonVisibility(){
         driver.findElement(placeAnOrderButton).isDisplayed();
+        return this;
+    }
+
+    @Step("Нажатие на вкладку Булки")
+    public MainPage bunTabConstructorClickAndCheck(){
+        driver.findElement(bunTabConstructor).click();
+        driver.findElement(activeTabBun).isDisplayed();
+        return this;
+    }
+
+    @Step("Нажатие на вкладку Соусы")
+    public MainPage sauseTabConstructorClickAndCheck(){
+        driver.findElement(sauseTabConstructor).click();
+        driver.findElement(activeTabSause).isDisplayed();
+        return this;
+    }
+
+    @Step("Нажатие на вкладку Начинки")
+    public MainPage fillingTabConstructorClickAndCheck(){
+        driver.findElement(fillingTabConstructor).click();
+        driver.findElement(activeTabFilling).isDisplayed();
         return this;
     }
 }

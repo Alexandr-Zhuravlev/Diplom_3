@@ -1,7 +1,6 @@
 package org.example.pom;
 
 import io.qameta.allure.Step;
-import org.example.config.TestProperties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -13,6 +12,7 @@ public class ProfilePage {
     }
 
     private By textProfilePage = By.xpath("//p[text() = 'В этом разделе вы можете изменить свои персональные данные']");
+    private By logOutButton = By.xpath("//button[text() = 'Выход']");
 
     @Step("Проверка что текст на странице профиля виден")
     public ProfilePage textProfileTextVisibility(){
@@ -20,15 +20,9 @@ public class ProfilePage {
         return this;
     }
 
-    @Step("Открытие браузера в личном кабинете")
-    public ProfilePage open(){
-        driver.get(TestProperties.BASE_URL + TestProperties.PATH_ACCOUNT_PROFILE);
-        return this;
-    }
-
-    @Step("Разворачивание окна в максимальный размер")
-    public ProfilePage maximizeWindow(){
-        driver.manage().window().maximize();
+    @Step("Нажатие на кнопку Выход")
+    public ProfilePage logOutButtonClick(){
+        driver.findElement(logOutButton).click();
         return this;
     }
 }
