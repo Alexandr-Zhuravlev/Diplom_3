@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
-import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
 import org.example.generators.UserGenerator;
 import org.example.models.UserDto;
@@ -20,6 +19,18 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 public class LogOutTest extends AbstractUiBaseTest {
 
+    String accessToken;
+
+    @Override
+    public void tearDown() {
+        super.tearDown();
+
+        //Удаление созданного пользователя
+        if(accessToken != null){
+            userSteps.delete(accessToken, SC_ACCEPTED);
+        }
+    }
+
     @Test
     @DisplayName("Проверка выхода по кнопке Выйти в личном кабинете")
     public void transitionInProfileAccount(){
@@ -30,7 +41,7 @@ public class LogOutTest extends AbstractUiBaseTest {
 
         UserDto user = UserGenerator.randomUser();
         Response response = userSteps.create(user, SC_OK);
-        final String accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
+        accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
         final String refreshToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("refreshToken").getAsString();
 
         mainPage
@@ -46,8 +57,5 @@ public class LogOutTest extends AbstractUiBaseTest {
                 .logOutButtonClick();
         loginPage
                 .loginButtonVisibility();
-
-        //Удаление созданного пользователя
-        userSteps.delete(accessToken, SC_ACCEPTED);
     }
 }

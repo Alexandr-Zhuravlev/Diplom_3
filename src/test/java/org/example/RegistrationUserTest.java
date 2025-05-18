@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
-import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
 import org.example.generators.UserGenerator;
 import org.example.models.UserCreds;
@@ -17,6 +16,17 @@ import static org.apache.http.HttpStatus.*;
 
 public class RegistrationUserTest extends AbstractUiBaseTest {
 
+    String accessToken;
+
+    @Override
+    public void tearDown() {
+        super.tearDown();
+
+        //Удаление созданного пользователя
+        if(accessToken != null){
+            userSteps.delete(accessToken, SC_ACCEPTED);
+        }
+    }
 
     @Test
     @DisplayName("Проверка успешной регистрации")
@@ -38,8 +48,8 @@ public class RegistrationUserTest extends AbstractUiBaseTest {
         //Проверка, что пользователь создан
         Response response = userSteps.login(UserCreds.builder()
                 .email(user.getEmail()).password(user.getPassword()).build(), SC_OK);
-        //Удаление созданного пользователя
-        userSteps.delete(new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString(), SC_ACCEPTED);
+
+        accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
     }
 
     @Test

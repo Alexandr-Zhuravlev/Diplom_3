@@ -48,22 +48,37 @@ public class MainPage {
     }
 
     @Step("Нажатие на вкладку Булки")
-    public MainPage bunTabConstructorClickAndCheck(){
+    public MainPage bunTabConstructorClick(){
         driver.findElement(bunTabConstructor).click();
+        return this;
+    }
+
+    @Step("Проверка что вкладка Булки активна")
+    public MainPage bunTabConstructorCheckActivity(){
         driver.findElement(activeTabBun).isDisplayed();
         return this;
     }
 
     @Step("Нажатие на вкладку Соусы")
-    public MainPage sauseTabConstructorClickAndCheck(){
+    public MainPage sauseTabConstructorClick(){
         driver.findElement(sauseTabConstructor).click();
+        return this;
+    }
+
+    @Step("Проверка что вкладка Соусы активна")
+    public MainPage sauseTabConstructorCheckActivity(){
         driver.findElement(activeTabSause).isDisplayed();
         return this;
     }
 
     @Step("Нажатие на вкладку Начинки")
-    public MainPage fillingTabConstructorClickAndCheck(){
+    public MainPage fillingTabConstructorClick(){
         driver.findElement(fillingTabConstructor).click();
+        return this;
+    }
+
+    @Step("Проверка что вкладка Начинки активна")
+    public MainPage fillingTabConstructorCheckActivity(){
         driver.findElement(activeTabFilling).isDisplayed();
         return this;
     }

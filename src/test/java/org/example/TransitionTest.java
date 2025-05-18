@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.response.Response;
-import jdk.jfr.Description;
 import org.example.config.AbstractUiBaseTest;
 import org.example.generators.UserGenerator;
 import org.example.models.UserDto;
@@ -19,6 +18,18 @@ import static org.apache.http.HttpStatus.SC_OK;
 
 public class TransitionTest extends AbstractUiBaseTest {
 
+    String accessToken;
+
+    @Override
+    public void tearDown() {
+        super.tearDown();
+
+        //Удаление созданного пользователя
+        if(accessToken != null){
+            userSteps.delete(accessToken, SC_ACCEPTED);
+        }
+    }
+
     @Test
     @DisplayName("Проверка перехода по клику на Личный кабинет")
     public void transitionInProfileAccount(){
@@ -28,7 +39,7 @@ public class TransitionTest extends AbstractUiBaseTest {
 
         UserDto user = UserGenerator.randomUser();
         Response response = userSteps.create(user, SC_OK);
-        final String accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
+        accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
 
         mainPage
                 .open()
@@ -42,9 +53,6 @@ public class TransitionTest extends AbstractUiBaseTest {
                 .personalAccountButtonClick();
         profilePage
                 .textProfileTextVisibility();
-
-        //Удаление созданного пользователя
-        userSteps.delete(accessToken, SC_ACCEPTED);
     }
 
     @Test
@@ -68,9 +76,6 @@ public class TransitionTest extends AbstractUiBaseTest {
                 .logoStellarBurgersClick();
         mainPage
                 .placeAnOrderButtonVisibility();
-
-        //Удаление созданного пользователя
-        userSteps.delete(accessToken, SC_ACCEPTED);
     }
 
     @Test
@@ -81,7 +86,7 @@ public class TransitionTest extends AbstractUiBaseTest {
 
         UserDto user = UserGenerator.randomUser();
         Response response = userSteps.create(user, SC_OK);
-        final String accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
+        accessToken = new Gson().fromJson(response.body().asString(), JsonObject.class).get("accessToken").getAsString();
 
         mainPage
                 .open()
@@ -94,8 +99,5 @@ public class TransitionTest extends AbstractUiBaseTest {
                 .constructorButtonClick();
         mainPage
                 .placeAnOrderButtonVisibility();
-
-        //Удаление созданного пользователя
-        userSteps.delete(accessToken, SC_ACCEPTED);
     }
 }
